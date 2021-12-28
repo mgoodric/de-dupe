@@ -1,0 +1,4 @@
+mysql-connector
+numpy
+imghdr
+cv2

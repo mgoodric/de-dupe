@@ -10,9 +10,27 @@ services:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - ./containers/db/scripts:/docker-entrypoint-initdb.d
+      - ./containers/db/data:/var/lib/mysql
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    
+  de-dupe:
+    build:
+      context: .
+      dockerfile: ./containers/app/Dockerfile
+    links:
+      - db
+    environment:
+      - DB_USER=root
+      - DB_PASS=example
+      - DB_NAME=db
+      - DB_SCHEMA=fileinfo
+    volumes:
+      - ./app:/usr/src/app
+      - /mnt/d/Dropbox:/Dropbox:ro
